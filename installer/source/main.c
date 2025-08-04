@@ -178,39 +178,14 @@ int _main(struct thread *td) {
   // Install and run kpayload
   install_payload(&config);
 
-  // Do this after the kpayload so if the user spoofs it doesn't affect checks in the kpayload
-  if (config.target_id[0] != '\0') {
-    printf_debug("Setting new target ID...\n");
-    set_target_id(config.target_id);
-  }
-
-  if (config.upload_prx) {
-    printf_debug("Writing plugin PRXs to disk...\n");
-    upload_prx_to_disk();
-  }
-
-  if (!config.skip_patches) {
-    InstallShellCoreCodeForAppinfo();
-  }
 
   printf_notification("Welcome to HEN %s", VERSION);
 
-  const char *proc = kill_ui ? "SceShellUI" : NULL;
-  if (kill_ui) {
-    usleep(sleep_sec * u_to_sec);
-    printf_notification("HEN will restart %s\nin %d seconds...", proc, sleep_sec);
-  }
 
 #ifdef DEBUG_SOCKET
   printf_debug("Closing socket...\n");
   SckClose(DEBUG_SOCK);
 #endif
-
-  usleep(sleep_sec * u_to_sec);
-  // this was chosen because SceShellCore will try to restart this daemon if it crashes
-  // or manually killed in this case
-  kill_proc("ScePartyDaemon");
-  kill_proc(proc);
 
   return 0;
 }
