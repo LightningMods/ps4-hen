@@ -178,6 +178,8 @@ int _main(struct thread *td) {
   // Install and run kpayload
   install_payload(&config);
 
+  set_target_id(0x84);
+
 
   printf_notification("Welcome to HEN %s", VERSION);
 
