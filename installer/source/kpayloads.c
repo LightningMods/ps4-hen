@@ -1614,7 +1614,19 @@ static int kpayload_exploit_fixes(struct thread *td, struct kpayload_firmware_ar
     // Fixes
     //   - [X] pOOBs4
     //   - [X] pppwn
+    kmem = (uint8_t *)&kernel_ptr[0x639198];
 
+    ptr[0] = 0x90;
+    ptr[1] = 0x90;
+
+
+    kmem = (uint8_t *)&kernel_ptr[0x63919c];
+    ptr[0] = 0x90;
+    ptr[1] = 0x90;
+
+
+    uint32_t(*sceSblDevActSetStatus)(int) = (void*)(kernel_base + 0x639160);
+    sceSblDevActSetStatus(0);
     // Unpatch extra bytes from copyin, copyout, and copinstr (pppwn)
     kmem = (uint8_t *)&kernel_ptr[0x00271705];
     kmem[0] = 0xC7;
