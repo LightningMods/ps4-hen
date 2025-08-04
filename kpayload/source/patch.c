@@ -475,22 +475,7 @@ error:
 }
 
 PAYLOAD_CODE void apply_patches() {
-  if (0) {
-    shellui_patch();
-  }
-  remoteplay_patch();
-  shellcore_patch();
 }
 
 PAYLOAD_CODE void install_patches() {
-  apply_patches();
-
-  // Varies per FW
-  if (fw_version <= 550) {
-    // eventhandler_register_old(NULL, "system_suspend_phase3", &function_name, NULL, EVENTHANDLER_PRI_PRE_FIRST); // < 5.50
-    eventhandler_register_old(NULL, "system_resume_phase4", &apply_patches, NULL, EVENTHANDLER_PRI_LAST); // < 5.50
-  } else {
-    // eventhandler_register(NULL, "system_suspend_phase3", &function_name, "hen_resume_patches", NULL, EVENTHANDLER_PRI_PRE_FIRST); // 5.50+ (Any changes after 6.72?)
-    eventhandler_register(NULL, "system_resume_phase4", &apply_patches, "hen_resume_patches", NULL, EVENTHANDLER_PRI_LAST); // 5.50+ (Any changes after 6.72?)
-  }
 }
